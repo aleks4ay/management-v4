@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head th:insert="~{fragments/header :: head}"/>
+<body>
+<div th:insert="~{fragments/header :: navbar}"> </div>
+<h1 style="text-align: center">З А К А З Ы</h1>
+
+<hr>
+<br>
+<div class="row justify-content-center">
+    <div class="col-min">
+        <table class="table table-striped auto__table table-condensed text-center">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">№</th>
+                <th scope="col"><a href="#" th:href="'/order/sort?method=idDoc'">Id doc</a></th>
+                <th scope="col"><a href="#" th:href="'/order/sort?method=idClient'">Id Client </a></th>
+                <th scope="col"><a href="#" th:href="'/order/sort?method=idManager'">Id Manager </a></th>
+                <th scope="col"><a href="#" th:href="'/order/sort?method=durationTime'">Время выполнения</a></th>
+                <th scope="col"><a href="#" th:href="'/order/sort?method=price'">Цена, грн </a></th>
+                <th scope="col"><a href="#" th:href="'/order/sort?method=dateToFactory'">Дата 'в производство' </a></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item,step : ${orders}">
+                <th scope="row">
+                    <input type="hidden" value="#" th:value="${item.idDoc}"/>
+                    <span th:text="${step.count+rows*(page-1)}"/>
+                </th>
+                <td th:text="${item.idDoc}"></td>
+                <td th:text="${item.idClient}"></td>
+                <td th:text="${item.idManager}"></td>
+                <td th:text="${item.durationTime}"></td>
+                <td th:text="${#numbers.formatDecimal(item.price, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
+                <td th:text="${item.shortStringDate}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <p th:text="'Страница '+ ${page}"/>
+        <a href="#" th:href="'/order/page?p=' + ${page - 1}">Prev</a>
+        <a href="#" th:href="'/order/page?p=' + ${page + 1}">Next</a>
+    </div>
+</div>
+
+<div th:insert="~{fragments/header :: footer}"> </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head th:insert="~{fragments/header :: head}"/>
+<body>
+<div th:insert="~{fragments/header :: navbar}"> </div>
+<h1 style="text-align: center">П О З И Ц И И &nbsp; &nbsp;&nbsp; &nbsp;З А К А З О В</h1>
+
+<hr>
+<br>
+<div class="row justify-content-center">
+    <div class="col-8">
+        <table class="table table-striped auto__table table-condensed text-center">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">№</th>
+                <th scope="col"><a href="#" th:href="'/descr/sort?method=idDoc'">Код документа</a></th>
+                <th scope="col"><a href="#" th:href="'/descr/sort?method=idClient'">Позиция</a></th>
+                <th scope="col"><a href="#" th:href="'/descr/sort?method=idManager'">Код ТМЦ</a></th>
+                <th scope="col"><a href="#" th:href="'/descr/sort?method=durationTime'">Количество</a></th>
+                <th scope="col"><a href="#" th:href="'/descr/sort?method=durationTime'">Доп. описание</a></th>
+                <th scope="col"><a href="#" th:href="'/descr/sort?method=durationTime'">Длина, мм</a></th>
+                <th scope="col"><a href="#" th:href="'/descr/sort?method=durationTime'">Ширина, мм</a></th>
+                <th scope="col"><a href="#" th:href="'/descr/sort?method=durationTime'">Высота, мм</a></th>
+                <th scope="col"><a href="#" th:href="'/descr/sort?method=durationTime'">Код исполнения</a></th>
+                <th scope="col"><a href="#" th:href="'/descr/sort?method=price'">Цена, грн </a></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item,step : ${descriptions}">
+                <th scope="row">
+                    <input type="hidden" value="#" th:value="${item.idDoc} + '-' + ${item.position}"/>
+                    <span th:text="${step.count}"/>
+                </th>
+                <td th:text="${item.idDoc}"></td>
+                <td th:text="${item.position}"></td>
+                <td th:text="${item.idTmc}"></td>
+                <td th:text="${item.quantity}"></td>
+                <td th:text="${item.descrSecond}"></td>
+                <td th:text="${item.sizeA}"></td>
+                <td th:text="${item.sizeB}"></td>
+                <td th:text="${item.sizeC}"></td>
+                <td th:text="${item.idEmbodiment}"></td>
+                <td th:text="${#numbers.formatDecimal(item.price, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:insert="~{fragments/header :: footer}"> </div>
+<!--<div th:include="footer :: (${user.isAdmin}? #{footer.admin} : #{footer.normaluser})"></div>-->
+</body>
+</html>
