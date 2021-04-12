@@ -38,6 +38,18 @@ public class Description extends AbstractEntity<Description>{
     @Column(name = "price")
     private Double price;
 
+    @Transient
+    private String status;
+
+    @Transient
+    private String type;
+
+    @Transient
+    private Worker designer;
+
+    @Transient
+    private Tmc tmc;
+
     @Override
     public Description getEntity() {
         return this;
@@ -154,8 +166,47 @@ public class Description extends AbstractEntity<Description>{
         this.price = price;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Worker getDesigner() {
+        return designer;
+    }
+
+    public void setDesigner(Worker designer) {
+        this.designer = designer;
+    }
+
+    public Tmc getTmc() {
+        return tmc;
+    }
+
+    public void setTmc(Tmc tmc) {
+        this.tmc = tmc;
+    }
+
     public Description getDescription() {
         return this;
+    }
+
+    public String getDescr() {
+        if (descrSecond == null | descrSecond.equals("")) {
+            return tmc.getDescrAll();
+        }
+        return descrSecond;
     }
 
     @Override

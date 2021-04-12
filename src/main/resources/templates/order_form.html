@@ -4,45 +4,65 @@
 <head th:insert="~{fragments/header :: head}"/>
 <body>
 <div th:insert="~{fragments/header :: navbar}"> </div>
-<h1 style="text-align: center">З А К А З Ы</h1>
+<h1 class="col-md-10" style="text-align: center">З А К А З Ы</h1>
 
 <hr>
 <br>
-<div class="row justify-content-center">
-    <div class="col-min">
-        <table class="table table-striped auto__table table-condensed text-center">
+<div style="text-align: center" class="col-md-10 col-lg-8 col-xl-8">
+    <!--<tr >-->
+        <table class="table table-bordered text-center">
             <thead class="thead-light">
-            <tr>
-                <th scope="col">№</th>
-                <th scope="col"><a href="#" th:href="'/order/sort?method=idDoc'">Id doc</a></th>
-                <th scope="col"><a href="#" th:href="'/order/sort?method=idClient'">Id Client </a></th>
-                <th scope="col"><a href="#" th:href="'/order/sort?method=idManager'">Id Manager </a></th>
-                <th scope="col"><a href="#" th:href="'/order/sort?method=durationTime'">Время выполнения</a></th>
-                <th scope="col"><a href="#" th:href="'/order/sort?method=price'">Цена, грн </a></th>
-                <th scope="col"><a href="#" th:href="'/order/sort?method=dateToFactory'">Дата 'в производство' </a></th>
-            </tr>
+                <tr>
+                    <th scope="col">№</th>
+                    <th scope="col"><a href="#" th:href="'/order/sort?method=idDoc'">№<br>заказа</a></th>
+                    <th scope="col">Дата заказа</th>
+                    <th scope="col" width="100">Клиент</th>
+                    <th scope="col"><a href="#" th:href="'/order/sort?method=idManager'">Менеджер</a></th>
+                    <th scope="col"><a href="#" th:href="'/order/sort?method=dateToFactory'">Дата <br>'в производство' </a></th>
+                    <th scope="col">№<br>поз.</th>
+                    <th scope="col" width="350">Продукция</th>
+                    <th scope="col">Кол.</th>
+                    <!--<th scope="col">Тип</th>-->
+                    <!--<th scope="col">Статус</th>-->
+                    <!--<th scope="col">Конструктор</th>-->
+                </tr>
             </thead>
             <tbody>
-            <tr th:each="item,step : ${orders}">
-                <th scope="row">
-                    <input type="hidden" value="#" th:value="${item.idDoc}"/>
-                    <span th:text="${step.count+rows*(page-1)}"/>
-                </th>
-                <td th:text="${item.idDoc}"></td>
-                <td th:text="${item.idClient}"></td>
-                <td th:text="${item.idManager}"></td>
-                <td th:text="${item.durationTime}"></td>
-                <td th:text="${#numbers.formatDecimal(item.price, 1, 'WHITESPACE', 2, 'COMMA')}"></td>
-                <td th:text="${item.shortStringDate}"></td>
-            </tr>
+                <span th:each="item,step : ${orders}">
+                <tr>
+                    <th scope="row" th:rowspan="${item.size}">
+                        <input type="hidden" value="#" th:value="${item.idDoc}"/>
+                        <span th:text="${step.count+rows*(page-1)}"/>
+                    </th>
+                    <td th:text="${item.journal.docNumber}" th:rowspan="${item.size}"></td>
+                    <td th:text="${item.journal.shortStringDate}" th:rowspan="${item.size}"></td>
+                    <td th:text="${item.client.name}" th:rowspan="${item.size}"></td>
+                    <td th:text="${item.manager.name}" th:rowspan="${item.size}"></td>
+                    <td th:text="${item.shortStringDate}" th:rowspan="${item.size}"></td>
+
+                    <td th:text="${item.firstDescription.position}"></td>
+                    <td th:text="${item.firstDescription.descr}"></td>
+                    <td th:text="${item.firstDescription.quantity}"></td>
+                </tr>
+
+                <th:block th:each="item2,step2 : ${item.descriptions}">
+                    <tr th:if="${!step2.first}">
+
+                    <td th:text="${item2.position}"></td>
+                    <td th:text="${item2.descr}"></td>
+                    <td th:text="${item2.quantity}"></td>
+                    <!--<td th:text="${item2.type}"></td>-->
+                    <!--<td th:text="${item2.status}"></td>-->
+                    <!--<td th:text="${item2.designer}"></td>-->
+                    </tr>
+                </th:block>
+                </span>
             </tbody>
         </table>
         <p th:text="'Страница '+ ${page}"/>
         <a href="#" th:href="'/order/page?p=' + ${page - 1}">Prev</a>
         <a href="#" th:href="'/order/page?p=' + ${page + 1}">Next</a>
     </div>
-</div>
-
 <div th:insert="~{fragments/header :: footer}"> </div>
 </body>
 </html>

@@ -3,6 +3,7 @@ package ua.aleks4ay.kiyv_management.model;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,8 +23,18 @@ public class Order extends AbstractEntity<Order>{
     private int durationTime;
     @Column(name = "t_factory")
     private Timestamp dateToFactory;
+
     private double price;
-//    private List<Description> descriptions;
+
+    @Transient
+    private List<Description> descriptions;
+
+    @Transient
+    private Client client;
+    @Transient
+    private Worker manager;
+    @Transient
+    private Journal journal;
 
     public Order() {
     }
@@ -91,6 +102,57 @@ public class Order extends AbstractEntity<Order>{
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Worker getManager() {
+        return manager;
+    }
+
+    public void setManager(Worker manager) {
+        this.manager = manager;
+    }
+
+    public Journal getJournal() {
+        return journal;
+    }
+
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
+
+    public List<Description> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(List<Description> descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public void addDescriptions(Description description) {
+        if (descriptions == null) {
+            descriptions = new ArrayList<>();
+        }
+        descriptions.add(description);
+    }
+
+
+    public Description getFirstDescription() {
+        if (descriptions != null && !descriptions.isEmpty()) {
+            return descriptions.get(0);
+        }
+        return null;
+    }
+
+    public int getSize() {
+        return descriptions.size();
     }
 
     @Override
