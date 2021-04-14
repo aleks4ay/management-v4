@@ -41,14 +41,27 @@ public class Description extends AbstractEntity<Description>{
     @Transient
     private String status;
 
+//    @Column(name = "status_id", nullable = false, unique = false)
+//    @Enumerated(EnumType.ORDINAL)
+//    private Status status;
+
+//    @Transient
+//    private String type;
+
+//    @Column(name = "type_id", nullable = false, unique = false)
+//    @Enumerated(EnumType.ORDINAL)
     @Transient
-    private String type;
+    public Type type;
+
+    @Column(name = "type_name", columnDefinition = "varchar(30) default 'TYPE_NEW';")
+    private String typeName;
 
     @Transient
     private Worker designer;
 
     @Transient
     private Tmc tmc;
+
 
     @Override
     public Description getEntity() {
@@ -174,12 +187,36 @@ public class Description extends AbstractEntity<Description>{
         this.status = status;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public boolean isCeh() {
+        return type.equals(Type.TYPE_CEH);
+    }
+
+    public boolean isKb() {
+        return type.equals(Type.TYPE_KB);
+    }
+
+    public boolean isTeh() {
+        return type.equals(Type.TYPE_TEHN);
+    }
+
+    public boolean isOther() {
+        return type.equals(Type.TYPE_OTHER);
     }
 
     public Worker getDesigner() {

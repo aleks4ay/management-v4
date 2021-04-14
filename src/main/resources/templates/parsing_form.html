@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head  th:fragment="head">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link  th:href="@{/css/parsing.css}" rel="stylesheet" />
+    <title>KIY-V Pro</title>
+    <script type="text/javascript"  th:src="@{/js/startScript.js}" src="../static/js/startScript.js"></script>
+</head>
+
+<body>
+<div th:insert="~{fragments/header :: navbar}"> </div>
+<h1 class="col-md-10" style="text-align: center">Р А С П Р Е Д Е Л Е Н И Е&nbsp; &nbsp;&nbsp; &nbsp;З А К А З О В</h1>
+
+<hr>
+<div class="row justify-content-center">
+    <h3 class="col-md-8 col-lg-8 col-xl-8">
+        <a href="#" th:href="'/order/page?p=' + ${page - 1}">Prev</a>
+        <span th:text="' [Стр. '+ ${page} + '] '"/>
+        <a href="#" th:href="'/order/page?p=' + ${page + 1}">Next</a>
+    </h3>
+    <br>
+    <table class="table table-bordered text-center col-md-8 col-lg-8 col-xl-8">
+        <thead class="thead-light">
+            <tr style="border: 2px #000000 solid">
+                <th width="10.0%"><a href="#" th:href="'/order/sort?method=idDoc'">№<br>заказа</a></th>
+                <th scope="col" width="20%">Клиент</th>
+                <th scope="col" width="9.0%"><a href="#" th:href="'/order/sort?method=idManager'">Менеджер</a></th>
+                <th scope="col" width="7.0%"><a href="#" th:href="'/order/sort?method=dateToFactory'">Поступил на<br>распределение </a></th>
+                <th scope="col" width="4.0%">Количество<br>позиций</th>
+                <th scope="col">Описание первой позиции</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr th:each="item,step : ${orders}" th:id="${item.idDoc}" onclick="setIdOrder(this);">
+<!--                <input type="hidden" class="idDoc" th:value="${item.idDoc}"/>-->
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                        addElements(
+                            /*[[${item.idDoc}]]*/ 'default',
+                            /*[[${item.journal.docNumber}]]*/ 'default',
+                            /*[[${item.client.name}]]*/ 'default'
+                        );
+                        /*]]>*/
+                    </script>
+                <td scope="row">
+                    <input type="hidden" value="#" th:value="${item.idDoc}"/>
+                    <span class="idDoc" th:text="${item.journal.docNumber}"></span>
+                </td>
+                <td th:text="${item.client.name}"></td>
+                <td th:text="${item.manager.name}"></td>
+                <td th:text="${item.shortStringDate}"></td>
+                <td th:text="${item.size}"></td>
+                <td th:text="${item.firstDescription.descr}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div class="row justify-content-center"> <!--class="row justify-content-center"-->
+    <table class="table table-bordered text-center col-md-8 col-lg-8 col-xl-8">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col" rowspan="2">Номер<br>позиции</th>
+                <th scope="col" rowspan="2">Описание</th>
+                <th scope="col" rowspan="2">Габаритные размеры<br>(длина/ширина/высота)</th>
+                <th scope="col" rowspan="2">Коли-<br>чество</th>
+                <th scope="col" colspan="4">Тип позиции</th>
+            </tr>
+            <tr>
+                <th scope="col" width="9.0%">Ц Е Х</th>
+                <th scope="col" width="9.0%">К Б</th>
+                <th scope="col" width="9.0%">Технологич</th>
+                <th scope="col" width="9.0%">Прочее</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="d,step : ${descriptions}">
+            <td scope="row">
+                <input type="hidden" value="#" th:value="${d.idDoc} + '-' + ${d.position}"/>
+                <span th:text="${d.position}"/>
+            </td>
+            <td th:text="${d.descrSecond}"></td>
+            <td th:text="${d.sizeA+'×'+d.sizeB+'×'+d.sizeC}"></td>
+            <td th:text="${d.quantity}"></td>
+            <td th:id="${d.idDoc + '-' + d.position}" class="kiyv-type" th:text="${d.ceh}"></td>
+            <td th:id="${d.idDoc + '-' + d.position}" class="kiyv-type" th:text="${d.kb}"></td>
+            <td th:id="${d.idDoc + '-' + d.position}" class="kiyv-type" th:text="${d.teh}"></td>
+            <td th:id="${d.idDoc + '-' + d.position}" class="kiyv-type" th:text="${d.other}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="block-1" onclick="print(this);">block-#1</div>
+<div id="block-2" onclick="print(this);">block-#2</div>
+
+<input type="button" value="цех" onclick="print(this, 0);">
+<input type="button" value="КБ" onclick="print(this, 1);">
+<input type="button" value="техн." onclick="print(this, 2);">
+<input type="button" value="прочее" onclick="print(this, 3);">
+<input type="button" value="print" onclick="print2();">
+
+<div>
+    <p>Нажато на:</p>
+    <p id="printBoard"></p>
+</div>
+
+<script type="text/javascript"  th:src="@{/js/script1.js}" src="../static/js/script1.js"></script>
+
+<div th:insert="~{fragments/header :: footer}"> </div>
+</body>
+</html>
