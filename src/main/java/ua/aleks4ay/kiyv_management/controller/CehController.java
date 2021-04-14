@@ -27,6 +27,7 @@ public class CehController {
     private int rowsOfPage = 15;
     private String sortMethod = "idDoc";
     private int numPage = 1;
+    private int numParsPage = 1;
 
 
     @GetMapping("/ceh")
@@ -49,16 +50,36 @@ public class CehController {
 //    }
 
     @GetMapping("/ceh/pars")
-    public String getPage(Map<String, Object> model) {
-        Page<Order> orders = orderService.getAllPage(numPage, rowsOfPage, sortMethod);
+    public String getParsPage(Map<String, Object> model) {
+        Page<Order> orders = orderService.getAllPage(numParsPage, rowsOfPage, sortMethod);
         orderService.addJournal(journalService.getAll(), orders);
         orderService.addListDescriptions(descriptionService.getAllWithTmc(), orders);
         orderService.addClient(clientService.getAll(), orders);
         orderService.addManager(managerService.getAll(), orders);
         model.put("orders", orders);
         model.put("rows", rowsOfPage);
-        model.put("page", numPage);
-        model.put("descriptions", orders.getContent().get(0).getDescriptions());
+        model.put("page", numParsPage);
+//        model.put("descriptions", orders.getContent().get(0).getDescriptions());
         return "parsing_form";
+    }
+
+    @GetMapping("/ceh/page")
+    public String setPage(@RequestParam("p") String page, Map<String, Object> model) {
+        int numPage = Integer.valueOf(page);
+        if (numPage < 1) {
+            numPage = 1;
+        }
+        this.numPage = numPage;
+        return "redirect:/ceh";
+    }
+
+    @GetMapping("/ceh/pars/page")
+    public String setParsePage(@RequestParam("p") String page, Map<String, Object> model) {
+        int numParsPage = Integer.valueOf(page);
+        if (numParsPage < 1) {
+            numParsPage = 1;
+        }
+        this.numParsPage = numParsPage;
+        return "redirect:/ceh/pars";
     }
 }

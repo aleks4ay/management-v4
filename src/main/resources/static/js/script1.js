@@ -1,22 +1,23 @@
-function print(element, index) {
-	let elements = document.getElementsByClassName('kiyv-type');
-	for (let i = 0; i < elements.length; i++) {
-		if (i==index) {
-			elements[i].innerHTML = element.value;
-		} else {
-			elements[i].innerHTML = '-';
+function setIdOrder(arg) {
+	let p = document.getElementById('printBoard');
+	p.innerHTML = arg.id;
+	idDoc = arg.id;
+
+	let descriptionRows = document.querySelectorAll('#description-table-1 .descr-visible');
+	console.log(descriptionRows.length);
+	if (descriptionRows != null) {
+		for (let i = 0; i < descriptionRows.length; i++) {
+			descriptionRows[i].classList.remove('descr-visible');
+			descriptionRows[i].classList.add('descr-hidden')
+		}
+	}
+	let newDescription = document.getElementsByClassName(idDoc);
+	console.log(newDescription.length);
+	if (newDescription != null) {
+		for (let i = 0; i < newDescription.length; i++) {
+			newDescription[i].classList.remove('descr-hidden');
+			newDescription[i].classList.add('descr-visible')
 		}
 	}
 }
-
-function setIdOrder(idDoc) {
-	let p = document.getElementById('printBoard');
-	p.innerHTML = idDoc.id;
-}
-
-function addDescrSecond(idDoc, descrSecond) {
-
-}
-
-// let indexes = [];
-// let descriptionSeconds = [];
+let idDoc ='';

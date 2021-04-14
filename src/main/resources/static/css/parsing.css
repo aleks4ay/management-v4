@@ -2,3 +2,10 @@ TR:hover {
     background: #def4f6;
 }
 
+.descr-hidden {
+    visibility: collapse;
+}
+
+.descr-visible {
+    visibility: visible;
+}

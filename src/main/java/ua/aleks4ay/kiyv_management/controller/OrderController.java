@@ -37,6 +37,11 @@ public class OrderController {
         return "redirect:/order";
     }
 
+    @GetMapping("/home")
+    public String startHome() {
+        return "redirect:/";
+    }
+
     @GetMapping("/order")
     public String getAllOrders(Map<String, Object> model) {
         Page<Order> orders = orderService.getAllPage(numPage, rowsOfPage, sortMethod);
