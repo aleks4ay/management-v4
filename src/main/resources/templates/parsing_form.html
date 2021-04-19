@@ -15,6 +15,7 @@
 <h1 class="col-md-10" style="text-align: center">Р А С П Р Е Д Е Л Е Н И Е&nbsp; &nbsp;&nbsp; &nbsp;З А К А З О В</h1>
 
 <hr>
+
 <div class="row justify-content-center">
     <h3 class="col-md-8 col-lg-8 col-xl-8">
         <a href="#" th:href="'/ceh/pars/page?p=' + ${page - 1}">Prev</a>
@@ -35,7 +36,7 @@
         </thead>
         <tbody>
 
-            <tr th:each="item,step : ${orders}" th:id="${item.idDoc}" onclick="setIdOrder(this);">
+            <tr th:each="item,step : ${orders}" th:id="${item.idDoc}" onclick="setIdOrder(this);setSelectStyle();">
                 <td scope="row">
                     <input type="hidden" value="#" th:value="${item.idDoc}"/>
                     <span class="idDoc" th:text="${item.journal.docNumber}"></span>
@@ -51,57 +52,65 @@
 </div>
 
 
-<div class="row justify-content-center">
-    <table class="table table-bordered text-center col-md-8 col-lg-8 col-xl-8">  <!-- class="table table-bordered text-center"-->
-        <thead class="thead-light">
-            <tr>
-                <th scope="col" rowspan="2">Номер<br>позиции</th>
-                <th scope="col" rowspan="2">Описание</th>
-                <th scope="col" width="18.0%" rowspan="2">Габаритные размеры<br>(длина/ширина/высота)</th>
-                <th scope="col" rowspan="2">Коли-<br>чество</th>
-                <th scope="col" colspan="4">Тип позиции</th>
-            </tr>
-            <tr>
-                <th scope="col" width="7.0%">Ц Е Х</th>
-                <th scope="col" width="7.0%">К Б</th>
-                <th scope="col" width="9.0%">Технологич</th>
-                <th scope="col" width="8.0%">Прочее</th>
-            </tr>
-        </thead>
-        <tbody id="description-table-1">
-            <span th:each="ordr,step : ${orders}">
-                <tr th:each="d,step2 : ${ordr.descriptions}"
-                            th:class="${d.idDoc + ' descr-hidden'}" th:id="${d.idDoc + '-' + d.position}">
-                    <td th:text="${d.position}"></td>
-                    <td th:text="${d.descr}"></td>
-                    <td th:text="${d.sizeA+'×'+d.sizeB+'×'+d.sizeC}"></td>
-                    <td th:text="${d.quantity}"></td>
-                    <td class="kiyv-type">
-                        <input type="radio" th:id="${d.id+'-0'}" th:name="${d.id}" th:checked="${d.ceh}"/>
-                    </td>
-                    <td class="kiyv-type">
-                        <input type="radio" th:id="${d.id+'-1'}" th:name="${d.id}" th:checked="${d.kb}"/>
-                    </td>
-                    <td class="kiyv-type">
-                        <input type="radio" th:id="${d.id+'-2'}" th:name="${d.id}" th:checked="${d.teh}"/>
-                    </td>
-                    <td class="kiyv-type">
-                        <input type="radio" th:id="${d.id+'-3'}" th:name="${d.id}" th:checked="${d.other}"/>
-                    </td>
-                </tr>
-            </span>
-        </tbody>
-    </table>
-</div>
-
-
 <div>
-    <p>Код Заказа: </p>
-    <p id="printBoard"></p>
+    <form action="#" th:action="@{/ceh/pars/apply}" method="post" th:object="${supperOrder}">
+        <div class="row justify-content-center">
+            <table class="table table-bordered text-center col-md-8 col-lg-8 col-xl-8">  <!-- class="table table-bordered text-center"-->
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col" rowspan="2">Номер<br>позиции</th>
+                        <th scope="col" rowspan="2">Описание</th>
+                        <th scope="col" width="18.0%" rowspan="2">Габаритные размеры<br>(длина/ширина/высота)</th>
+                        <th scope="col" rowspan="2">Коли-<br>чество</th>
+                        <th scope="col" colspan="4">Тип позиции</th>
+                    </tr>
+                    <tr>
+                        <th scope="col" width="7.0%">Ц Е Х</th>
+                        <th scope="col" width="7.0%">К Б</th>
+                        <th scope="col" width="9.0%">Технологич</th>
+                        <th scope="col" width="8.0%">Прочее</th>
+                    </tr>
+                </thead>
+                <tbody id="description-table-1">
+                    <tr th:each="items,step : ${supperOrder.descriptions}"
+                                th:class="${items.idDoc + ' descr-hidden'}" th:id="${items.idDoc+'-'+items.position}">
+                        <input type="hidden" th:name="${'descriptions[' + step.index + '].autoId'}" th:value="${items.autoId}"/>
+                        <input type="hidden" th:name="${'descriptions[' + step.index + '].idDoc'}" th:value="${items.idDoc}"/>
+                        <input type="hidden" th:name="${'descriptions[' + step.index + '].position'}" th:value="${items.position}"/>
+                        <input type="hidden" th:name="${'descriptions[' + step.index + '].idTmc'}" th:value="${items.idTmc}"/>
+                        <input type="hidden" th:name="${'descriptions[' + step.index + '].quantity'}" th:value="${items.quantity}"/>
+                        <input type="hidden" th:name="${'descriptions[' + step.index + '].descrSecond'}" th:value="${items.descrSecond}"/>
+                        <input type="hidden" th:name="${'descriptions[' + step.index + '].sizeA'}" th:value="${items.sizeA}"/>
+                        <input type="hidden" th:name="${'descriptions[' + step.index + '].sizeB'}" th:value="${items.sizeB}"/>
+                        <input type="hidden" th:name="${'descriptions[' + step.index + '].sizeC'}" th:value="${items.sizeC}"/>
+                        <input type="hidden" th:name="${'descriptions[' + step.index + '].idEmbodiment'}" th:value="${items.idEmbodiment}"/>
+                        <input type="hidden" th:name="${'descriptions[' + step.index + '].price'}" th:value="${items.price}"/>
+                        <td th:text="${items.position}"></td>
+                        <td th:text="${items.descr}"></td>
+                        <td th:text="${items.sizeA+'×'+items.sizeB+'×'+items.sizeC}"></td>
+                        <td th:text="${items.quantity}"></td>
+                        <td> <input type="radio" th:name="${'descriptions[' + step.index + '].typeName'}" th:value="TYPE_CEH"
+                                    th:checked="${items.typeName =='TYPE_CEH'}"/> </td>
+                        <td> <input type="radio" th:name="${'descriptions[' + step.index + '].typeName'}" th:value="TYPE_KB"
+                                    th:checked="${items.typeName =='TYPE_KB'}"/> </td>
+                        <td> <input type="radio" th:name="${'descriptions[' + step.index + '].typeName'}" th:value="TYPE_TEHN"
+                                    th:checked="${items.typeName =='TYPE_TEHN'}" /> </td>
+                        <td> <input type="radio" th:name="${'descriptions[' + step.index + '].typeName'}" th:value="TYPE_OTHER"
+                                    th:checked="${items.typeName =='TYPE_OTHER'}" /> </td>
+                        <input type="radio" th:name="${'descriptions[' + step.index + '].typeName'}" th:value="TYPE_NEW"
+                               th:checked="${items.typeName =='TYPE_NEW'}" hidden/>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            <br>
+        <div class="row justify-content-center">
+            <button type="submit">Оформить заказ с descriptions</button>
+        </div>
+    </form>
 </div>
 
 <script type="text/javascript"  th:src="@{/js/script1.js}" src="../static/js/script1.js"></script>
-
 <div th:insert="~{fragments/header :: footer}"> </div>
 </body>
 </html>

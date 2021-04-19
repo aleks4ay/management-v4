@@ -21,6 +21,6 @@ public interface DescriptionRepo extends JpaRepository<Description, Long> {
     @Query("select d from Description d where d.idDoc = :idDoc and d.position = :position")
     Description findByComplexId(@Param("idDoc") String idDoc, @Param("position") int position);
 
-//    @Override
-//    List<Description> findAll(Sort sort);
+    @Override
+    List<Description> findAll(Sort sort);
 }

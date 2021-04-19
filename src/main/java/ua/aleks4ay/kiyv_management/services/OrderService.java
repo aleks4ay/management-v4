@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.aleks4ay.kiyv_management.model.*;
 import ua.aleks4ay.kiyv_management.repo.OrderRepo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,8 @@ public class OrderService{
         }
     }
 
-    public void addListDescriptions(List<Description> descriptions, Page<Order> orderPage) {
+    public List<Description> addListDescriptions(List<Description> descriptions, Page<Order> orderPage) {
+        List<Description> usesDescription = new ArrayList<>();
         Map<String, Order> orderMap = new HashMap<>();
         for (Order o : orderPage) {
             orderMap.put(o.getId(), o);
@@ -56,8 +58,10 @@ public class OrderService{
             Order tempOrder = orderMap.get(d.getIdDoc());
             if (tempOrder != null) {
                 tempOrder.addDescriptions(d);
+                usesDescription.add(d);
             }
         }
+        return usesDescription;
     }
 
     public void addClient(List<Client> clients, Page<Order> orders) {

@@ -9,3 +9,7 @@ TR:hover {
 .descr-visible {
     visibility: visible;
 }
+
+.order-select, .order-select:hover {
+    background: #91d9ae;
+}

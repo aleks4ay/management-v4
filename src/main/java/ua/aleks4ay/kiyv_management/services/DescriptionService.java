@@ -30,11 +30,14 @@ public class DescriptionService {
 
 
     public List<Description> getAll() {
-        return descriptionRepo.findAll();
+        return descriptionRepo.findAll(Sort.by("idDoc").and(Sort.by("position")));
     }
 
     public List<Description> getAllWithTmc() {
-        List<Description> descriptions = descriptionRepo.findAll();
+        List<Description> descriptions = descriptionRepo.findAll(
+                Sort.by(Sort.Direction.ASC, "idDoc").
+                and(
+                Sort.by(Sort.Direction.ASC, "position")));
         Map<String, Tmc> tmcMap = tmcService.getAllAsMap();
         for (Description d : descriptions) {
             d.setTmc(tmcMap.get(d.getIdTmc()));
@@ -52,4 +55,9 @@ public class DescriptionService {
 //    public List<Description> getAllSorted(String sortMethod) {
 //        return repo.findAll(Sort.by(Sort.Direction.ASC, sortMethod));
 //    }
+
+    @Transactional
+    public void save(List<Description> descriptions) {
+        descriptionRepo.saveAll(descriptions);
+    }
 }

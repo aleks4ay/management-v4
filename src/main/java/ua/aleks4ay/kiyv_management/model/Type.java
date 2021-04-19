@@ -4,7 +4,7 @@ public enum Type {
     TYPE_NEW("новый"),
     TYPE_KB("КБ"),
     TYPE_CEH("ЦЕХ"),
-    TYPE_TEHN("Техн."),
+    TYPE_TEHN("Технологич."),
     TYPE_ABC("АВС"),
     TYPE_OTHER("Прочее");
 
